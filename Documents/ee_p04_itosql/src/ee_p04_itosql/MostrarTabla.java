@@ -28,6 +28,9 @@ public class MostrarTabla<T>  extends  JFrame implements ActionListener
   DefaultTableModel table=new DefaultTableModel();
   private JTable registro=new JTable();
   private JScrollPane Jsp=new JScrollPane();
+  /**
+   * CONTENIDO DE LA INTERFAZ
+   */
   public MostrarTabla(){
       super(" TABLAS");
       setSize(900,500);
@@ -64,8 +67,15 @@ public class MostrarTabla<T>  extends  JFrame implements ActionListener
       Jsp.setBounds(20,160,0,getHeight());
       this.id="";
   }
+  /**
+   * RETONO UN ID PARA INDENTIFICAR QUE TABLA MOSTRAR
+   * @return
+   */
   public String getId(){return id;}
   public void setId(String ide){this.id=ide;}
+  /**
+   * ACCIONES DE LOS BOTONES ORDENA REALIZAR LOS ORENAMIENTOS  SOLICITADOS
+   */
   public void actionPerformed(ActionEvent e){
       try{
       if(e.getSource()==Mostrar){
@@ -115,6 +125,12 @@ public class MostrarTabla<T>  extends  JFrame implements ActionListener
       }
     }catch(Exception x){}
   }
+  /**
+   * RECIBE LAS COLUMNAS LA COLUMNAS QUE SERA ORDENADA Y RETORNA UN ENTERO DE IDENTIFICACION
+   * @param d
+   * @param e
+   * @return
+   */
   public int eleccion(String d,String e){
       String arreglo[]=d.split("\\|"); int r=0;
       for(int i=0;i<arreglo.length;i++){
@@ -124,6 +140,10 @@ public class MostrarTabla<T>  extends  JFrame implements ActionListener
         }
       return r;
   }
+  /**
+   * AGREGA LOS DATOS DE A LA TABLA DEESPUES DE SER ORDENADO PARA SER MOSTRADA EN LA ITERFAZ
+   * @param x
+   */
   public void MostrarInformacion(Informacion<T> x){
       Informacion<T> var=x; int n=0;
       while(var!=null){
@@ -135,6 +155,11 @@ public class MostrarTabla<T>  extends  JFrame implements ActionListener
         var=var.getSiguiente();
       }
   }
+  /**
+   * METODO DE ORDENACION BURBUJA
+   * @param inf
+   * @param p
+   */
    public void Burbuja(Informacion<T> inf,int p){
      for(int i=0;i<2;i++){
        Informacion<T> informacion=inf;
@@ -152,6 +177,11 @@ public class MostrarTabla<T>  extends  JFrame implements ActionListener
                    }
                   }
   }
+   /**
+    * METODO BUSRBUJA CON SEÑAL
+    * @param inf
+    * @param p
+    */
   public void BurbujaConSeñal(Informacion<T> inf,int p){
      Informacion<T> var1=inf; boolean sts=true;
      while(var1.getSiguiente()!=null){
@@ -194,6 +224,11 @@ public class MostrarTabla<T>  extends  JFrame implements ActionListener
 		}
 	   if(sts==false){ShakerSort(var1.getSiguiente(),p);}
       }
+ /**
+  * METODO DE ORDENACION DE INSERCION DIRECTA
+  * @param inf
+  * @param p
+  */
  public void InserciónDirecta(Informacion<T> inf,int p){
 	   Informacion<T> var1=inf;
      while(var1.getSiguiente()!=null){
@@ -215,6 +250,11 @@ public class MostrarTabla<T>  extends  JFrame implements ActionListener
         var1=var1.getSiguiente();
       }
 	}
+ /**
+  * METODO DE ORDENACION SELECCION  DIRECTA
+  * @param inf
+  * @param p
+  */
  public void SeleccionDirecta(Informacion<T> inf, int p){
 	  Informacion<T> informacion=inf;
     while(informacion.getSiguiente()!=null){
@@ -237,6 +277,11 @@ public class MostrarTabla<T>  extends  JFrame implements ActionListener
        informacion=informacion.getSiguiente();
                    }
 	}
+ /**
+  * ABREGA COLUMNAS A LA TABLA 
+  * @param tabla
+  * @param t
+  */
    public void creaColumnas(Informacion<T> tabla,String t){
        JLabel tab = new JLabel( "Nombre de la tabla:   "+t);
        Ventana1.add(tab);

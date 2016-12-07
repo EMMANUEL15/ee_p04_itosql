@@ -20,6 +20,9 @@ public class BorrarTabla<T>  extends  JFrame implements ActionListener
   JLabel tabla = new JLabel( "BORRAR TABLA");
   public Tabla<T> NuevaTabla; String id="";
   private JButton Aceptar=new JButton("Cancelar");
+  /*
+   * contenidos de la intefaz
+   */
   public BorrarTabla(){
       super("Borrar Tabla");
       setSize(660,250);
@@ -46,6 +49,9 @@ public class BorrarTabla<T>  extends  JFrame implements ActionListener
       Aceptar.setBounds(40,150,100,30);
       Aceptar.addActionListener(this);
   }
+  /**
+   * ACCIONES DE LOS BOTONES
+   */
   public void actionPerformed(ActionEvent e){
       if(e.getSource()==Borrar){
         try{  
@@ -65,6 +71,9 @@ public class BorrarTabla<T>  extends  JFrame implements ActionListener
               this.dispose();
       }
   }
+  /*
+   * recorre los la lista para asignar los nombres de las tablas jcombox
+   */
   public void llenarfichero(Tabla<T> tabla){
       Tabla<T> var=tabla;
       tablas.removeAllElements(); int i=0;
@@ -76,9 +85,17 @@ public class BorrarTabla<T>  extends  JFrame implements ActionListener
          var=var.getSiguienteTabla();
         }
   }
+  /**
+   * RECIBE ACTUALIZA LA TABLA
+   * @param NT
+   */
   public void setNuevaTabla(Tabla<T> NT){
       this.NuevaTabla=NT;
   }
+  /**
+   * recorre a la lista de tablas para buscar y eliminar a la tabla que sido solicitado para ser eliminado 
+   * @param dato
+   */
   public void Eliminar(T dato){
        Tabla<T> aux=NuevaTabla.getSiguienteTabla();   Tabla<T> Anterior=NuevaTabla;   Tabla<T> siguiente=null; boolean sts=false;
        while(aux.getSiguienteTabla()!=null){

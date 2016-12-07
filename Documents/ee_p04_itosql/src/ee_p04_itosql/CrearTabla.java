@@ -8,6 +8,11 @@ import javax.swing.table.DefaultTableModel;
 import java.util.*;
 /** 
 * @author (Lopez Ramirez Emanuel) 
+* 
+* ESTA CLASSE CREA TABLAS 
+* EN CASO QUE UNA TABLA TENGA CAMPOS SIN NOMBRE O SIN CAMPOS NO SE CREA NO ES NECESARIO CREA UNA TABLA VACIA 
+* EXIGE QUE LA TABLA TENGA UN NOMBRE Y CAMPOS, LOS CAMPOS SE CREAN CON EL BOTON AGREGAR CAMPOS Y TABLA SE CREA CON EL BOTON ACEPTAR
+* 
 */
 public class CrearTabla<T>  extends  JFrame implements ActionListener 
 {
@@ -18,6 +23,9 @@ public class CrearTabla<T>  extends  JFrame implements ActionListener
   private JTextField tabla=new JTextField();
   int Av=60; Tabla<T> NuevaTabla;
   public ArrayList<JTextField> variable = new ArrayList<JTextField>();
+  /**
+   * CONTENIDO DE LA INTERFAZ
+   */
   public CrearTabla(){
       super("CREACION DE TABLA");
       setSize(1000,500);
@@ -43,6 +51,9 @@ public class CrearTabla<T>  extends  JFrame implements ActionListener
       tabla.setBounds(220,20,240,30);
       
 }
+  /**
+   * CREA NUEVOS ESPSCIOS CADA VES QUE QUE ES SOLICITADO POR EL BOTON AGREGAR CAMPO
+   */
   public void AgragarCampo(){
    int x=getHeight()-80;
       if(Av<600){
@@ -70,6 +81,9 @@ public class CrearTabla<T>  extends  JFrame implements ActionListener
       Aceptar.setBounds(20,x,100,30);
   }else{ JOptionPane.showMessageDialog(rootPane,"Necesita deplazarse!");}
 }
+/**
+ * RECOLECTA LOS DATOS  QUE HAN SIDO AGREDADOS PARA CREA UN NUEVO NODO DE LA LISTA DOMBLEMENTE LIGADA
+ */
 public void Imprimier(){
   String fila="";
   for(int i=0;i<variable.size();i++){
@@ -91,6 +105,9 @@ public void Imprimier(){
       V.setVisible(true);
   }
 }
+/**
+ * ACCION DE LOS BOTONES 
+ */
 public void actionPerformed(ActionEvent e) {//sobreescribimos el metodo del listener
    if(e.getSource()==Aceptar){
      if(variable.isEmpty()!=true){
@@ -118,6 +135,11 @@ public Informacion<T> Columna(T columnas){
        tabla.getText();
        return filas;
       }
+/**
+ * RECIBE UN NOMBRE Y LOS DATOS QUE TENDRA LA TABLA POSTERIOMENTE CREARLA
+ * @param Nombre
+ * @param c
+ */
 public void SiguienteTabla(T Nombre,T c){
        try{
          Tabla<T> var=NuevaTabla;

@@ -1,4 +1,10 @@
 package ee_p04_itosql;
+/**
+ * 
+ * @author EMMANUEL
+ * 	NODOS CON DOBLE APUNTADOR
+ * @param <T> 
+ */
 public class Informacion<T> {
 	private T Dato;
 	private Informacion<T> Siguiente;
@@ -6,7 +12,7 @@ public class Informacion<T> {
 public Informacion(T dato){
 	this.Dato=dato;
 	this.Siguiente=null;
-	this.Siguiente=null;
+	this.Anterior=null;
 }
 public T getDato() {
 	return Dato;

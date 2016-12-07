@@ -13,6 +13,8 @@ package ee_p04_itosql;
 * el lado derecho de contenido apunta la columnas que tendra la tabla y su lado derecho apunta a nodo de una 
 * lista doblemeten ligada que son los datos que se almacena en la tabla.
 * 
+* la tabla que es mostrada solo es preliminar para tene en cuenta las acciones 
+* 
 */
 import java.awt.*; 
 import javax.swing.*;
@@ -23,21 +25,26 @@ import javax.swing.table.DefaultTableModel;
 public class ee_p04_itosql<T> extends  JFrame implements ActionListener 
 {
   private Container Ventana1= getContentPane(); 
-  JLabel Opciones = new JLabel( "Opciones: " );//
+  DefaultComboBoxModel Columnas=new DefaultComboBoxModel();
+  JLabel Opciones = new JLabel( "Opciones  " );//
   JLabel simulacion = new JLabel( "ITO_MSQL" );
   public String OPCIONES[]={"CREAR TABLA","MOSTRAR TABLA", "INCERTAR DATO","BORRAR TABLA"};
   JComboBox ListaOpciones=new JComboBox(OPCIONES);
   private JButton Aceptar=new JButton("Aceptar");
   private JButton Mostrar=new JButton("Actualizar");
+   private JButton ver=new JButton("ver");
   Tabla<T> NuevaTabla;
   DefaultComboBoxModel tablas=new DefaultComboBoxModel();
   JComboBox ListaTablas=new JComboBox(tablas);
   DefaultTableModel table=new DefaultTableModel();
   private JTable registro=new JTable();
   private JScrollPane Jsp=new JScrollPane();
+  /**
+   * contenido
+   */
   public ee_p04_itosql(){
       super("ee_p04_itosql");
-      setSize(400,400);
+      setSize(400,500);
       Ventana1.setLayout(null);
       Ventana1.setBackground(Color.BLACK);
       //Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("mysql.png"));
@@ -62,9 +69,15 @@ public class ee_p04_itosql<T> extends  JFrame implements ActionListener
       Aceptar.addActionListener(this);
       
       Ventana1.add(Mostrar);
-      //Mostrar.setBounds(170,190,150,30);
+      Mostrar.setBounds(170,190,150,30);
       Mostrar.addActionListener(this);
+      
+      Ventana1.add(ver);
+      ver.addActionListener(this);
       e();
+      
+      Ventana1.add(Jsp);
+      Jsp.setViewportView(registro);
        //jlabel con imag
       JLabel JImagen = new JLabel();
       Ventana1.add(JImagen);
@@ -74,6 +87,9 @@ public class ee_p04_itosql<T> extends  JFrame implements ActionListener
       JImagen.setIcon(icono);
       this.repaint();
   }
+  /**
+   * acciones de los botones
+   */
   public  void actionPerformed(ActionEvent e) {//sobreescribimos el metodo del listener
       if(e.getSource()==Aceptar){
           if(ListaOpciones.getSelectedItem().equals("MOSTRAR TABLA")){
@@ -102,65 +118,83 @@ public class ee_p04_itosql<T> extends  JFrame implements ActionListener
               V.setVisible(true);
           }
       }else if(e.getSource()==Mostrar){
-        Tabla<T> var =NuevaTabla;
-          while(var!=null){
-          //System.out.print(var.ToString());
-          var=var.getSiguienteTabla();
-        }
-        //System.out.println();
-      }else if(e.getSource()==ListaTablas){
-        Tabla<T> var =NuevaTabla;
+              Tabla<T> var =NuevaTabla;
+              tablas.removeAllElements(); int i=0;
+              while(var!=null){
+                  if(i!=0){
+                      tablas.addElement(var.getNombre());
+                  }
+                  i++;
+                  var=var.getSiguienteTabla();
+              }
+              JLabel vista = new JLabel("Vista preliminar de las tablas");
+              Ventana1.add(vista);
+              vista.setForeground(Color.WHITE);
+              vista.setBounds(100,250,220,30);
+              Ventana1.add(ListaTablas);
+              ListaTablas.setBounds(100,290,220,30);
+              ver.setBounds(170,340,150,30);
+          }else if(e.getSource()==ver){
+           if(ListaOpciones.getSelectedItem().equals(null)||ListaOpciones.getSelectedItem().equals("")){
+           }else {
+              Tabla<T> var=NuevaTabla; int i=0;
          while(var!=null){
-          if(ListaTablas.getSelectedItem().equals(String.valueOf(var.getNombre()))){
-             this.dispose();
-             ee_p04_itosql<T> V=new ee_p04_itosql<T>();
-             V.setLocationRelativeTo(null);
-             V.setNuevaTabla(NuevaTabla);
-             V.setVisible(true);
-             V.setExtendedState(JFrame.MAXIMIZED_BOTH);
-             V.creaColumnas(var.getSiguienteFila(),String.valueOf(ListaTablas.getSelectedItem()));
-             V.MostrarInformacion(var.getSiguienteFila());
+           if(String.valueOf(var.getNombre()).equals(String.valueOf(ListaTablas.getSelectedItem()))){
+                  String d=String.valueOf(ListaTablas.getSelectedItem());
+                  this.dispose();
+                  ee_p04_itosql<T> V=new ee_p04_itosql<T>();
+                  V.setLocationRelativeTo(null);
+                  V.setNuevaTabla(NuevaTabla);
+                  V.setVisible(true);
+                  V.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                  V.creaColumnas(var.getSiguienteFila(),String.valueOf(ListaTablas.getSelectedItem()));
+                  V.Burbuja(var.getSiguienteFila().getSiguiente(), V.eleccion(String.valueOf(var.getSiguienteFila().getDato()),d));
+                  V.MostrarInformacion(var.getSiguienteFila());
+                   break;
+              }
+           var=var.getSiguienteTabla();
           }
-          var=var.getSiguienteTabla();
         }
+          }
       }
-  }
+  /**
+   * Metodo ejecuable del sistema
+   * @param args
+   */
   public static void main(String[] args) { 
        ee_p04_itosql V=new ee_p04_itosql();
        V.setLocationRelativeTo(null);
        V.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
        V.setVisible(true);
       }
-  public void MisTablas(){
-      Tabla<T> var =NuevaTabla;
-      tablas.removeAllElements(); int i=0;
-      while(var!=null){
-         if(i!=0){
-           tablas.addElement(var.getNombre());
-          }
-         i++;
-         var=var.getSiguienteTabla();
-        }
-      JLabel vista = new JLabel("Vista preliminar de las tablas");
-      Ventana1.add(vista);
-      vista.setForeground(Color.WHITE);
-      vista.setBounds(100,250,220,30);
-      Ventana1.add(ListaTablas);
-      ListaTablas.setBounds(100,290,220,30);
-      ListaTablas.addActionListener(this);
-  }
+  /**
+   * retorna tabla
+   * @return
+   */
    public Tabla<T> getNuevaTabla(){
        return NuevaTabla;
   }
+   /**
+    * actualiza tabla
+    * @param recibido
+    */
   public void setNuevaTabla(Tabla<T> recibido){
       this.NuevaTabla=recibido;
    }
+  /*
+   * recibe una primera tabla como referencia
+   */
    public void PrimerTabla(T Nombre){
        Tabla<T> N=new Tabla<T>(Nombre);
        N.setSiguienteTabla(NuevaTabla);
        N.setSiguienteFila(Columna(Nombre));
        this.NuevaTabla=N;
   }
+   /**
+    * recibe datos para crear columnas
+    * @param columnas
+    * @return
+    */
   public Informacion<T> Columna(T columnas){
        Informacion<T> filas=null;
        Informacion<T> N=new Informacion<T>(columnas);
@@ -168,9 +202,35 @@ public class ee_p04_itosql<T> extends  JFrame implements ActionListener
        filas=N;
        return filas;
       }
+  /**
+   * ingresa tabla de refencia
+   */
   public  void e(){
       PrimerTabla((T)""); 
   }
+  /**
+   * crea tablas con columas
+   * @param tabla
+   * @param t
+   */
+   public void creaColumnas(Informacion<T> tabla,String t){
+       JLabel tab = new JLabel( "Nombre de la tabla:   "+t);
+       Ventana1.add(tab);
+       tab.setBounds(400,20,300,30);
+       tab.setForeground(Color.WHITE);
+       String arreglo[]=String.valueOf(tabla.getDato()).split("\\|");
+       Columnas.removeAllElements();
+       for(int i=0;i<arreglo.length;i++){
+          Columnas.addElement((T)arreglo[i]);
+          table.addColumn(arreglo[i]);
+          registro.setModel(table);
+          }
+       Jsp.setBounds(400,50,900,595);
+  }
+   /**
+    * Agrega la informacion en la cada fila de la tabla
+    * @param x
+    */
   public void MostrarInformacion(Informacion<T> x){
       Informacion<T> var=x; int n=0;
       while(var!=null){
@@ -182,18 +242,43 @@ public class ee_p04_itosql<T> extends  JFrame implements ActionListener
         var=var.getSiguiente();
       }
   }
-   public void creaColumnas(Informacion<T> tabla,String t){
-       JLabel tab = new JLabel( "Nombre de la tabla:   "+t);
-       Ventana1.add(tab);
-       tab.setBounds(60,120,150,30);
-       String arreglo[]=String.valueOf(tabla.getDato()).split("\\|");
-       for(int i=0;i<arreglo.length;i++){
-          registro.setModel(table);
+  /**
+   * crea retorna un valor de la columana que sera ordenada
+   * @param d
+   * @param e
+   * @return
+   */
+  public int eleccion(String d,String e){
+      String arreglo[]=d.split("\\|"); int r=0;
+      for(int i=0;i<arreglo.length;i++){
+          if(arreglo[i].equals(e)){
+              r=i;break;
           }
-       if(arreglo.length>=7){
-          Jsp.setBounds(20,160,1300,getHeight());
-          }else{
-           Jsp.setBounds(20,160,(200*(arreglo.length)),(520));
+        }
+      return r;
+  }
+  /**
+   * merodo de oredenamiento para los datos de la tabla
+   * @param inf
+   * @param p
+   */
+   public void Burbuja(Informacion<T> inf,int p){
+     try{
+     for(int i=0;i<2;i++){
+       Informacion<T> informacion=inf;
+       while(informacion.getSiguiente()!=null){
+         String arreglo1[]=String.valueOf(informacion.getDato()).split("\\|"); String arreglo2[]=String.valueOf(informacion.getSiguiente().getDato()).split("\\|");
+         if(arreglo1[p].compareTo(arreglo2[p])>0){
+          T aux=informacion.getDato();
+          informacion.setDato(informacion.getSiguiente().getDato());
+          informacion.getSiguiente().setDato(aux);
+          while(informacion.getAnterior()!=null){
+            informacion=informacion.getAnterior();
+           }
           }
+         informacion=informacion.getSiguiente();
+                   }
+                  }
+              }catch(Exception x){}
   }
      }

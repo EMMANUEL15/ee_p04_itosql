@@ -21,6 +21,9 @@ public class AgregarInfo<T>  extends  JFrame implements ActionListener
   public Tabla<T> NuevaTabla; String id="";
   public ArrayList<JTextField> variable = new ArrayList<JTextField>();
   private JButton Agregar=new JButton("Agregar Info >>");
+  /**
+   * @ CONSTRUCTOR DE LA CLASE AGREGAR INFORMACION
+   */
   public AgregarInfo(){
       super("Agregar Dato");
       setSize(850,500);
@@ -47,6 +50,7 @@ public class AgregarInfo<T>  extends  JFrame implements ActionListener
       Agregar.setBounds(600,120,190,30);
       Agregar.addActionListener(this);
   }
+  
   public void setId(String id){this.id=id;}
   public void actionPerformed(ActionEvent e){
       if(e.getSource()==Aceptar){
@@ -73,6 +77,9 @@ public class AgregarInfo<T>  extends  JFrame implements ActionListener
          Receptor();
       } 
   }
+  /**
+   * recibe los datos de los nodos para crear columna
+   */
   public void Receptor(){
       String fila="";
       for(int i=0;i<variable.size();i++){
@@ -85,7 +92,10 @@ public class AgregarInfo<T>  extends  JFrame implements ActionListener
     }
     AgregarInf((T)fila);
   }
-  public void AgregarInf(T inf){// nueva fila nueva informacion
+  /*
+   * recibe los datos que son ingresados en los cambos para crea un nuevo nodo de la lista ligada que sera los datos de la tabla
+   */
+  public void AgregarInf(T inf){
       Tabla<T> var=NuevaTabla; int i=0;
       while(var!=null){
         if(String.valueOf(var.getNombre()).equals(id)){
@@ -106,6 +116,10 @@ public class AgregarInfo<T>  extends  JFrame implements ActionListener
         var=var.getSiguienteTabla();
          }
   }
+  /**
+   * toma datos de nodoSiguientefila para los espacion que se ingrearan los datos a la tabla 
+   * @param tabla
+   */
   public void Campos(Informacion<T> tabla){
        String arreglo[]=String.valueOf(tabla.getDato()).split("\\|");
        int x=getHeight()-80;
@@ -130,6 +144,10 @@ public class AgregarInfo<T>  extends  JFrame implements ActionListener
           }
        if(Av>=520){setSize(520,1400);}
   }
+  /**
+   * recorre la lista de tablas para asignar valor a Jcombobox
+   * @param tabla
+   */
   public void llenarfichero(Tabla<T> tabla){
       Tabla<T> var=tabla;
       tablas.removeAllElements(); int i=0;
@@ -141,6 +159,10 @@ public class AgregarInfo<T>  extends  JFrame implements ActionListener
          var=var.getSiguienteTabla();
         }
   }
+  /**
+   * RECIBE UNA TABLA PARA ACTUALIZAR LA TABLA ACTUAL
+   * @param NT
+   */
   public void setNuevaTabla(Tabla<T> NT){
       this.NuevaTabla=NT;
   }
